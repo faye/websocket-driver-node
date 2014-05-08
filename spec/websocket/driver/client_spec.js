@@ -131,7 +131,10 @@ test.describe("Client", function() { with(this) {
     before(function() { this.driver().start() })
 
     describe("with a valid response", function() { with(this) {
-      before(function() { this.driver().parse(new Buffer(this.response())) })
+      before(function(resume) { with(this) {
+        driver().parse(new Buffer(response()))
+        setTimeout(resume, 10)
+      }})
 
       it("changes the state to open", function() { with(this) {
         assertEqual( true, open )
@@ -149,11 +152,12 @@ test.describe("Client", function() { with(this) {
     }})
 
     describe("with a valid response followed by a frame", function() { with(this) {
-      before(function() { with(this) {
+      before(function(resume) { with(this) {
         var resp = new Buffer(response().length + 4)
         new Buffer(response()).copy(resp)
         new Buffer([0x81, 0x02, 72, 105]).copy(resp, resp.length - 4)
         driver().parse(resp)
+        setTimeout(resume, 10)
       }})
 
       it("changes the state to open", function() { with(this) {
@@ -168,10 +172,11 @@ test.describe("Client", function() { with(this) {
     }})
 
     describe("with a bad status line", function() { with(this) {
-      before(function() {
-        var resp = this.response().replace(/101/g, "4")
-        this.driver().parse(new Buffer(resp))
-      })
+      before(function(resume) { with(this) {
+        var resp = response().replace(/101/g, "4")
+        driver().parse(new Buffer(resp))
+        setTimeout(resume, 10)
+      }})
 
       it("changes the state to closed", function() { with(this) {
         assertEqual( false, open )
@@ -182,10 +187,11 @@ test.describe("Client", function() { with(this) {
     }})
 
     describe("with a bad Upgrade header", function() { with(this) {
-      before(function() {
-        var resp = this.response().replace(/websocket/g, "wrong")
-        this.driver().parse(new Buffer(resp))
-      })
+      before(function(resume) { with(this) {
+        var resp = response().replace(/websocket/g, "wrong")
+        driver().parse(new Buffer(resp))
+        setTimeout(resume, 10)
+      }})
 
       it("changes the state to closed", function() { with(this) {
         assertEqual( false, open )
@@ -196,10 +202,11 @@ test.describe("Client", function() { with(this) {
     }})
 
     describe("with a bad Accept header", function() { with(this) {
-      before(function() {
-        var resp = this.response().replace(/QV3/g, "wrong")
-        this.driver().parse(new Buffer(resp))
-      })
+      before(function(resume) { with(this) {
+        var resp = response().replace(/QV3/g, "wrong")
+        driver().parse(new Buffer(resp))
+        setTimeout(resume, 10)
+      }})
 
       it("changes the state to closed", function() { with(this) {
         assertEqual( false, open )
@@ -212,10 +219,11 @@ test.describe("Client", function() { with(this) {
     describe("with valid subprotocols", function() { with(this) {
       define("protocols", function() { return ["foo", "xmpp"] })
 
-      before(function() {
-        var resp = this.response().replace(/\r\n\r\n/, "\r\nSec-WebSocket-Protocol: xmpp\r\n\r\n")
-        this.driver().parse(new Buffer(resp))
-      })
+      before(function(resume) { with(this) {
+        var resp = response().replace(/\r\n\r\n/, "\r\nSec-WebSocket-Protocol: xmpp\r\n\r\n")
+        driver().parse(new Buffer(resp))
+        setTimeout(resume, 10)
+      }})
 
       it("changs the state to open", function() { with(this) {
         assertEqual( true, open )
@@ -231,10 +239,11 @@ test.describe("Client", function() { with(this) {
     describe("with invalid subprotocols", function() { with(this) {
       define("protocols", function() { return ["foo", "xmpp"] })
 
-      before(function() {
-        var resp = this.response().replace(/\r\n\r\n/, "\r\nSec-WebSocket-Protocol: irc\r\n\r\n")
-        this.driver().parse(new Buffer(resp))
-      })
+      before(function(resume) { with(this) {
+        var resp = response().replace(/\r\n\r\n/, "\r\nSec-WebSocket-Protocol: irc\r\n\r\n")
+        driver().parse(new Buffer(resp))
+        setTimeout(resume, 10)
+      }})
 
       it("changs the state to closed", function() { with(this) {
         assertEqual( false, open )

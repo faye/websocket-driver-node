@@ -199,42 +199,54 @@ test.describe("Hybi", function() { with(this) {
         return output
       })
 
-      it("parses unmasked text frames", function() { with(this) {
+      it("parses unmasked text frames", function(resume) { with(this) {
         driver().parse([0x81, 0x05, 0x48, 0x65, 0x6c, 0x6c, 0x6f])
-        assertEqual( "Hello", message )
+        setTimeout(function() {
+          resume(function() { assertEqual( "Hello", message ) })
+        }, 10)
       }})
 
-      it("parses multiple frames from the same packet", function() { with(this) {
+      it("parses multiple frames from the same packet", function(resume) { with(this) {
         driver().parse([0x81, 0x05, 0x48, 0x65, 0x6c, 0x6c, 0x6f, 0x81, 0x05, 0x48, 0x65, 0x6c, 0x6c, 0x6f])
-        assertEqual( "HelloHello", message )
+        setTimeout(function() {
+          resume(function() { assertEqual( "HelloHello", message ) })
+        }, 10)
       }})
 
-      it("parses empty text frames", function() { with(this) {
+      it("parses empty text frames", function(resume) { with(this) {
         driver().parse([0x81, 0x00])
-        assertEqual( "", message )
+        setTimeout(function() {
+          resume(function() { assertEqual( "", message ) })
+        }, 10)
       }})
 
-      it("parses fragmented text frames", function() { with(this) {
+      it("parses fragmented text frames", function(resume) { with(this) {
         driver().parse([0x01, 0x03, 0x48, 0x65, 0x6c])
         driver().parse([0x80, 0x02, 0x6c, 0x6f])
-        assertEqual( "Hello", message )
+        setTimeout(function() {
+          resume(function() { assertEqual( "Hello", message ) })
+        }, 10)
       }})
 
-      it("parses masked text frames", function() { with(this) {
+      it("parses masked text frames", function(resume) { with(this) {
         driver().parse([0x81, 0x85])
         driver().parse(mask())
         driver().parse(maskMessage([0x48, 0x65, 0x6c, 0x6c, 0x6f]))
-        assertEqual( "Hello", message )
+        setTimeout(function() {
+          resume(function() { assertEqual( "Hello", message ) })
+        }, 10)
       }})
 
-      it("parses masked empty text frames", function() { with(this) {
+      it("parses masked empty text frames", function(resume) { with(this) {
         driver().parse([0x81, 0x80])
         driver().parse(mask())
         driver().parse(maskMessage([]))
-        assertEqual( "", message )
+        setTimeout(function() {
+          resume(function() { assertEqual( "", message ) })
+        }, 10)
       }})
 
-      it("parses masked fragmented text frames", function() { with(this) {
+      it("parses masked fragmented text frames", function(resume) { with(this) {
         driver().parse([0x01, 0x81])
         driver().parse(mask())
         driver().parse(maskMessage([0x48]))
@@ -243,49 +255,67 @@ test.describe("Hybi", function() { with(this) {
         driver().parse(mask())
         driver().parse(maskMessage([0x65, 0x6c, 0x6c, 0x6f]))
 
-        assertEqual( "Hello", message )
+        setTimeout(function() {
+          resume(function() { assertEqual( "Hello", message ) })
+        }, 10)
       }})
 
-      it("closes the socket if the frame has an unrecognized opcode", function() { with(this) {
+      it("closes the socket if the frame has an unrecognized opcode", function(resume) { with(this) {
         driver().parse([0x83, 0x00])
-        assertEqual( [0x88, 0x1e, 0x03, 0xea], collector().bytes.slice(0,4) )
-        assertEqual( "Unrecognized frame opcode: 3", error.message )
-        assertEqual( [1002, "Unrecognized frame opcode: 3"], close )
-        assertEqual( "closed", driver().getState() )
+        setTimeout(function() {
+          resume(function() {
+            assertEqual( [0x88, 0x1e, 0x03, 0xea], collector().bytes.slice(0,4) )
+            assertEqual( "Unrecognized frame opcode: 3", error.message )
+            assertEqual( [1002, "Unrecognized frame opcode: 3"], close )
+            assertEqual( "closed", driver().getState() )
+          })
+        }, 10)
       }})
 
-      it("closes the socket if a close frame is received", function() { with(this) {
+      it("closes the socket if a close frame is received", function(resume) { with(this) {
         driver().parse([0x88, 0x07, 0x03, 0xe8, 0x48, 0x65, 0x6c, 0x6c, 0x6f])
-        assertEqual( [0x88, 0x07, 0x03, 0xe8, 0x48, 0x65, 0x6c, 0x6c, 0x6f], collector().bytes )
-        assertEqual( [1000, "Hello"], close )
-        assertEqual( "closed", driver().getState() )
+        setTimeout(function() {
+          resume(function() {
+            assertEqual( [0x88, 0x07, 0x03, 0xe8, 0x48, 0x65, 0x6c, 0x6c, 0x6f], collector().bytes )
+            assertEqual( [1000, "Hello"], close )
+            assertEqual( "closed", driver().getState() )
+          })
+        }, 10)
       }})
 
-      it("parses unmasked multibyte text frames", function() { with(this) {
+      it("parses unmasked multibyte text frames", function(resume) { with(this) {
         driver().parse([0x81, 0x0b, 0x41, 0x70, 0x70, 0x6c, 0x65, 0x20, 0x3d, 0x20, 0xef, 0xa3, 0xbf])
-        assertEqual( "Apple = ", message )
+        setTimeout(function() {
+          resume(function() { assertEqual( "Apple = ", message ) })
+        }, 10)
       }})
 
-      it("parses frames received in several packets", function() { with(this) {
+      it("parses frames received in several packets", function(resume) { with(this) {
         driver().parse([0x81, 0x0b, 0x41, 0x70, 0x70, 0x6c])
         driver().parse([0x65, 0x20, 0x3d, 0x20, 0xef, 0xa3, 0xbf])
-        assertEqual( "Apple = ", message )
+        setTimeout(function() {
+          resume(function() { assertEqual( "Apple = ", message ) })
+        }, 10)
       }})
 
-      it("parses fragmented multibyte text frames", function() { with(this) {
+      it("parses fragmented multibyte text frames", function(resume) { with(this) {
         driver().parse([0x01, 0x0a, 0x41, 0x70, 0x70, 0x6c, 0x65, 0x20, 0x3d, 0x20, 0xef, 0xa3])
         driver().parse([0x80, 0x01, 0xbf])
-        assertEqual( "Apple = ", message )
+        setTimeout(function() {
+          resume(function() { assertEqual( "Apple = ", message ) })
+        }, 10)
       }})
 
-      it("parse masked multibyte text frames", function() { with(this) {
+      it("parse masked multibyte text frames", function(resume) { with(this) {
         driver().parse([0x81, 0x8b])
         driver().parse(mask())
         driver().parse(maskMessage([0x41, 0x70, 0x70, 0x6c, 0x65, 0x20, 0x3d, 0x20, 0xef, 0xa3, 0xbf]))
-        assertEqual( "Apple = ", message )
+        setTimeout(function() {
+          resume(function() { assertEqual( "Apple = ", message ) })
+        }, 10)
       }})
 
-      it("parses masked fragmented multibyte text frames", function() { with(this) {
+      it("parses masked fragmented multibyte text frames", function(resume) { with(this) {
         driver().parse([0x01, 0x8a])
         driver().parse(mask())
         driver().parse(maskMessage([0x41, 0x70, 0x70, 0x6c, 0x65, 0x20, 0x3d, 0x20, 0xef, 0xa3]))
@@ -294,27 +324,35 @@ test.describe("Hybi", function() { with(this) {
         driver().parse(mask())
         driver().parse(maskMessage([0xbf]))
 
-        assertEqual( "Apple = ", message )
+        setTimeout(function() {
+          resume(function() { assertEqual( "Apple = ", message ) })
+        }, 10)
       }})
 
-      it("parses unmasked medium-length text frames", function() { with(this) {
+      it("parses unmasked medium-length text frames", function(resume) { with(this) {
         driver().parse([0x81, 0x7e, 0x00, 0xc8])
         var i = 40, result = ""
         while (i--) {
           driver().parse([0x48, 0x65, 0x6c, 0x6c, 0x6f])
           result += "Hello"
         }
-        assertEqual( result, message )
+        setTimeout(function() {
+          resume(function() { assertEqual( result, message ) })
+        }, 10)
       }})
 
-      it("returns an error for too-large frames", function() { with(this) {
+      it("returns an error for too-large frames", function(resume) { with(this) {
         driver().parse([0x81, 0x7f, 0x00, 0x00, 0x00, 0x00, 0x40, 0x00, 0x00, 0x00])
-        assertEqual( "WebSocket frame length too large", error.message )
-        assertEqual( [1009, "WebSocket frame length too large"], close )
-        assertEqual( "closed", driver().getState() )
+        setTimeout(function() {
+          resume(function() {
+            assertEqual( "WebSocket frame length too large", error.message )
+            assertEqual( [1009, "WebSocket frame length too large"], close )
+            assertEqual( "closed", driver().getState() )
+          })
+        }, 10)
       }})
 
-      it("parses masked medium-length text frames", function() { with(this) {
+      it("parses masked medium-length text frames", function(resume) { with(this) {
         driver().parse([0x81, 0xfe, 0x00, 0xc8])
         driver().parse(mask())
         var i = 40, result = "", packet = []
@@ -323,12 +361,18 @@ test.describe("Hybi", function() { with(this) {
           result += "Hello"
         }
         driver().parse(maskMessage(packet))
-        assertEqual( result, message )
+        setTimeout(function() {
+          resume(function() { assertEqual( result, message ) })
+        }, 10)
       }})
 
-      it("replies to pings with a pong", function() { with(this) {
+      it("replies to pings with a pong", function(resume) { with(this) {
         driver().parse([0x89, 0x04, 0x4f, 0x48, 0x41, 0x49])
-        assertEqual( [0x8a, 0x04, 0x4f, 0x48, 0x41, 0x49], collector().bytes )
+        setTimeout(function() {
+          resume(function() {
+            assertEqual( [0x8a, 0x04, 0x4f, 0x48, 0x41, 0x49], collector().bytes )
+          })
+        }, 10)
       }})
     }})
 
@@ -379,18 +423,22 @@ test.describe("Hybi", function() { with(this) {
         assertEqual( true, driver().ping() )
       }})
 
-      it("runs the given callback on mathing pong", function() { with(this) {
+      it("runs the given callback on mathing pong", function(resume) { with(this) {
         var reply = null
         driver().ping("Hi", function() { reply = true })
         driver().parse([0x8a, 0x02, 72, 105])
-        assert( reply )
+        setTimeout(function() {
+          resume(function() { assert( reply ) })
+        }, 10)
       }})
 
-      it("does not run the callback on non-matching pong", function() { with(this) {
+      it("does not run the callback on non-matching pong", function(resume) { with(this) {
         var reply = null
         driver().ping("Hi", function() { reply = true })
         driver().parse([0x8a, 0x03, 119, 97, 116])
-        assert( !reply )
+        setTimeout(function() {
+          resume(function() { assert( !reply ) })
+        }, 10)
       }})
     }})
 
@@ -427,15 +475,21 @@ test.describe("Hybi", function() { with(this) {
       this.driver().start()
     })
 
-    it("does not emit a message", function() { with(this) {
+    it("does not emit a message", function(resume) { with(this) {
       driver().parse([0x81, 0x05, 0x48, 0x65, 0x6c, 0x6c, 0x6f])
-      assertEqual( "", message )
+      setTimeout(function() {
+        resume(function() { assertEqual( "", message ) })
+      }, 10)
     }})
 
-    it("returns an error", function() { with(this) {
+    it("returns an error", function(resume) { with(this) {
       driver().parse([0x81, 0x05, 0x48, 0x65, 0x6c, 0x6c, 0x6f])
-      assertEqual( "Received unmasked frame but masking is required", error.message )
-      assertEqual( [1003, "Received unmasked frame but masking is required"], close )
+      setTimeout(function() {
+        resume(function() {
+          assertEqual( "Received unmasked frame but masking is required", error.message )
+          assertEqual( [1003, "Received unmasked frame but masking is required"], close )
+        })
+      }, 10)
     }})
   }})
 
@@ -479,8 +533,9 @@ test.describe("Hybi", function() { with(this) {
     }})
 
     describe("receiving a close frame", function() { with(this) {
-      before(function() {
+      before(function(resume) {
         this.driver().parse([0x88, 0x04, 0x03, 0xe9, 0x4f, 0x4b])
+        setTimeout(resume, 10)
       })
 
       it("triggers the onclose event", function() { with(this) {
@@ -494,10 +549,11 @@ test.describe("Hybi", function() { with(this) {
   }})
 
   describe("in the closed state", function() { with(this) {
-    before(function() {
+    before(function(resume) {
       this.driver().start()
       this.driver().close()
       this.driver().parse([0x88, 0x02, 0x03, 0xea])
+      setTimeout(resume, 10)
     })
 
     describe("frame", function() { with(this) {
