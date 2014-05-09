@@ -1,8 +1,10 @@
 var net       = require('net'),
-    websocket = require('../lib/websocket/driver');
+    websocket = require('../lib/websocket/driver'),
+    deflate   = require('../lib/websocket/extensions/per_message_deflate');
 
 var server = net.createServer(function(connection) {
   var driver = websocket.server();
+  driver.addExtension('permessage-deflate', deflate.create());
 
   driver.on('connect', function() {
     if (websocket.isWebSocket(driver)) driver.start();
