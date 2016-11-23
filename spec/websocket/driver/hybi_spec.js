@@ -522,8 +522,15 @@ test.describe("Hybi", function() { with(this) {
   describe("when masking is required", function() { with(this) {
     before(function() {
       this.options().requireMasking = true
+      this.options().masking = true
       this.driver().start()
     })
+
+    it("does not mutate the input if it is a buffer", function() { with(this) {
+      var buf = new Buffer([0x48, 0x65, 0x6c]), str = buf.toString('hex')
+      driver().frame(buf)
+      assertEqual(str, buf.toString('hex'))
+    }})
 
     it("does not emit a message", function() { with(this) {
       driver().parse([0x81, 0x05, 0x48, 0x65, 0x6c, 0x6c, 0x6f])
