@@ -257,8 +257,8 @@ test.describe("Client", function() { with(this) {
 
       it("changes the state to closed", function() { with(this) {
         assertEqual( false, open )
-        assertEqual( "Error during WebSocket handshake: Unexpected response code: 4", error.message )
-        assertEqual( [1002, "Error during WebSocket handshake: Unexpected response code: 4"], close )
+        assertEqual( "Error during WebSocket handshake: Parse Error", error.message )
+        assertEqual( [1002, "Error during WebSocket handshake: Parse Error"], close )
         assertEqual( "closed", driver().getState() )
       }})
     }})

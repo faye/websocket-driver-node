@@ -8,8 +8,13 @@
 , "version"         : "0.6.5"
 , "engines"         : {"node": ">=0.6.0"}
 , "main"            : "./lib/websocket/driver"
-, "dependencies"    : {"websocket-extensions": ">=0.1.1"}
-, "devDependencies" : {"jstest": "", "permessage-deflate": ""}
+
+, "dependencies"    : { "http-parser-js": ">=0.4.0"
+                      , "websocket-extensions": ">=0.1.1"
+                      }
+, "devDependencies" : { "jstest": ""
+                      , "permessage-deflate": ""
+                      }
 
 , "scripts"         : {"test": "jstest spec/runner.js"}
 
