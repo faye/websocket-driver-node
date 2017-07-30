@@ -2,7 +2,6 @@ sudo: false
 language: node_js
 
 node_js:
-  - "0.6"
   - "0.8"
   - "0.10"
   - "0.12"
@@ -16,5 +15,4 @@ node_js:
   - "8"
 
 before_install:
-  - '[ "${TRAVIS_NODE_VERSION}" = "0.6" ] && npm conf set strict-ssl false || true'
-  - '[ "${TRAVIS_NODE_VERSION}" = "0.6" -o "${TRAVIS_NODE_VERSION}" = "0.8" ] && npm install -g npm@~1.4.0 || true'
+  - '[ "${TRAVIS_NODE_VERSION}" = "0.8" ] && npm install -g npm@~1.4.0 || true'
