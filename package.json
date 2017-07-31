@@ -6,17 +6,17 @@
 , "license"         : "MIT"
 
 , "version"         : "0.6.5"
-, "engines"         : {"node": ">=0.8.0"}
+, "engines"         : { "node": ">=0.8.0" }
 , "main"            : "./lib/websocket/driver"
 
 , "dependencies"    : { "http-parser-js": ">=0.4.0"
                       , "websocket-extensions": ">=0.1.1"
                       }
-, "devDependencies" : { "jstest": ""
-                      , "permessage-deflate": ""
+, "devDependencies" : { "jstest": "*"
+                      , "permessage-deflate": "*"
                       }
 
-, "scripts"         : {"test": "jstest spec/runner.js"}
+, "scripts"         : { "test": "jstest spec/runner.js" }
 
 , "repository"      : { "type"  : "git"
                       , "url"   : "git://github.com/faye/websocket-driver-node.git"
