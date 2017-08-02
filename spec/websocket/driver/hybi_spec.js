@@ -386,6 +386,17 @@ test.describe("Hybi", function() { with(this) {
         assertEqual( [0x8a, 0x04, 0x4f, 0x48, 0x41, 0x49], collector().bytes )
       }})
 
+      it("triggers the onping event when a ping arrives", function() { with(this) {
+        var ping, pong
+        driver().on("ping", function(event) { ping = event })
+        driver().on("pong", function(event) { pong = event })
+
+        driver().parse([0x89, 0x04, 0x4f, 0x48, 0x41, 0x49])
+
+        assertEqual( "OHAI", ping.data )
+        assertEqual( undefined, pong )
+      }})
+
       describe("when a message listener throws an error", function() { with(this) {
         before(function() { with(this) {
           this.messages = []
@@ -471,6 +482,17 @@ test.describe("Hybi", function() { with(this) {
         driver().ping("Hi", function() { reply = true })
         driver().parse([0x8a, 0x02, 72, 105])
         assert( reply )
+      }})
+
+      it("triggers the onpong event when a pong arrives", function() { with(this) {
+        var ping, pong
+        driver().on("ping", function(event) { ping = event })
+        driver().on("pong", function(event) { pong = event })
+
+        driver().parse([0x8a, 0x02, 72, 105])
+
+        assertEqual( undefined, ping )
+        assertEqual( "Hi", pong.data )
       }})
 
       it("does not run the callback on non-matching pong", function() { with(this) {

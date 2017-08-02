@@ -281,6 +281,17 @@ describing the error.
 Adds a callback to execute when the socket becomes closed. The `event` object
 has `code` and `reason` attributes.
 
+#### `driver.on('ping', function(event) {})`
+
+Adds a callback block to execute when a ping is received. You do not need to
+handle this by sending a pong frame yourself; the driver handles this for you.
+
+#### `driver.on('pong', function(event) {})`
+
+Adds a callback block to execute when a pong is received. If this was in
+response to a ping you sent, you can also handle this event via the
+`driver.ping(message, function() { ... })` callback.
+
 #### `driver.addExtension(extension)`
 
 Registers a protocol extension whose operation will be negotiated via the
