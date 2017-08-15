@@ -1,3 +1,5 @@
+'use strict';
+
 var net       = require('net'),
     websocket = require('..'),
     deflate   = require('permessage-deflate');
