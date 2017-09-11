@@ -5,7 +5,7 @@
 , "keywords"        : ["websocket"]
 , "license"         : "MIT"
 
-, "version"         : "0.6.5"
+, "version"         : "0.7.0"
 , "engines"         : { "node": ">=0.8.0" }
 , "files"           : ["lib"]
 , "main"            : "./lib/websocket/driver"

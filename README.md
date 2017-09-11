@@ -368,5 +368,3 @@ Returns the WebSocket version in use as a string. Will either be `hixie-75`,
 Returns a string containing the selected subprotocol, if any was agreed upon
 using the `Sec-WebSocket-Protocol` mechanism. This value becomes available after
 `emit('open')` has fired.
-
-
