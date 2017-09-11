@@ -7,6 +7,7 @@
 
 , "version"         : "0.6.5"
 , "engines"         : { "node": ">=0.8.0" }
+, "files"           : ["lib"]
 , "main"            : "./lib/websocket/driver"
 
 , "dependencies"    : { "http-parser-js": ">=0.4.0"
