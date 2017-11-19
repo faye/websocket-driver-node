@@ -84,8 +84,13 @@ test.describe("Hybi", function() { with(this) {
           request().headers["sec-websocket-extensions"] = "x-webkit- -frame"
         }})
 
-        it("does not write a handshake", function() { with(this) {
-          expect(driver().io, "emit").exactly(0)
+        it("writes a handshake error response", function() { with(this) {
+          expect(driver().io, "emit").given("data", buffer(
+              "HTTP/1.1 400 Bad Request\r\n" +
+              "Content-Type: text/plain\r\n" +
+              "Content-Length: 57\r\n" +
+              "\r\n" +
+              "Invalid Sec-WebSocket-Extensions header: x-webkit- -frame"))
           driver().start()
         }})
 
@@ -115,13 +120,13 @@ test.describe("Hybi", function() { with(this) {
           driver().setHeader("Authorization", "Bearer WAT")
         }})
 
-        it("writes the handshake with Sec-WebSocket-Protocol", function() { with(this) {
+        it("writes the handshake with the custom headers", function() { with(this) {
           expect(driver().io, "emit").given("data", buffer(
               "HTTP/1.1 101 Switching Protocols\r\n" +
+              "Authorization: Bearer WAT\r\n" +
               "Upgrade: websocket\r\n" +
               "Connection: Upgrade\r\n" +
               "Sec-WebSocket-Accept: JdiiuafpBKRqD7eol0y4vJDTsTs=\r\n" +
-              "Authorization: Bearer WAT\r\n" +
               "\r\n"))
           driver().start()
         }})
