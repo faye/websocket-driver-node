@@ -89,8 +89,13 @@ test.describe("Draft76", function() { with(this) {
           request().headers["sec-websocket-key1"] = "2 L785 8o% s9Sy9@V. 4<1P5"
         }})
 
-        it("writes a closing frame to the socket", function() { with(this) {
-          expect(driver().io, "emit").given("data", buffer([0xff, 0x00]))
+        it("writes a handshake error response", function() { with(this) {
+          expect(driver().io, "emit").given("data", buffer(
+              "HTTP/1.1 400 Bad Request\r\n" +
+              "Content-Type: text/plain\r\n" +
+              "Content-Length: 45\r\n" +
+              "\r\n" +
+              "Client sent invalid Sec-WebSocket-Key headers"))
           driver().start()
         }})
 
