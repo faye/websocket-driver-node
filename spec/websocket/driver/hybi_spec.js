@@ -4,6 +4,7 @@ var Hybi = require("../../../lib/websocket/driver/hybi"),
 test.describe("Hybi", function() { with(this) {
   define("request", function() {
     return this._request = this._request || {
+      method: "GET",
       headers: {
         "connection":             "Upgrade",
         "upgrade":                "websocket",
