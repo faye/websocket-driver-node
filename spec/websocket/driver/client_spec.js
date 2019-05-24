@@ -1,4 +1,5 @@
 var Client = require("../../../lib/websocket/driver/client"),
+    Buffer = require('safe-buffer').Buffer,
     test   = require('jstest').Test
 
 test.describe("Client", function() { with(this) {
@@ -190,21 +191,21 @@ test.describe("Client", function() { with(this) {
 
       it("returns true when the response is written", function() { with(this) {
         // this prevents downstream connections suddenly closing for no reason
-        assertEqual( true, proxy.write(new Buffer("HTTP/1.1 200 OK\r\n\r\n")) )
+        assertEqual( true, proxy.write(Buffer.from("HTTP/1.1 200 OK\r\n\r\n")) )
       }})
 
       it("emits a 'connect' event when the proxy connects", function() { with(this) {
         expect(proxy, "emit").given("connect", anything())
         expect(proxy, "emit").given("close")
         expect(proxy, "emit").given("end")
-        proxy.write(new Buffer("HTTP/1.1 200 OK\r\n\r\n"))
+        proxy.write(Buffer.from("HTTP/1.1 200 OK\r\n\r\n"))
       }})
 
       it("emits an 'error' event if the proxy does not connect", function() { with(this) {
         expect(proxy, "emit").given("error", objectIncluding({message: "Can't establish a connection to the server at ws://www.example.com/socket"}))
         expect(proxy, "emit").given("close")
         expect(proxy, "emit").given("end")
-        proxy.write(new Buffer("HTTP/1.1 403 Forbidden\r\n\r\n"))
+        proxy.write(Buffer.from("HTTP/1.1 403 Forbidden\r\n\r\n"))
       }})
     }})
   }})
@@ -213,7 +214,7 @@ test.describe("Client", function() { with(this) {
     before(function() { this.driver().start() })
 
     describe("with a valid response", function() { with(this) {
-      before(function() { this.driver().parse(new Buffer(this.response())) })
+      before(function() { this.driver().parse(Buffer.from(this.response())) })
 
       it("changes the state to open", function() { with(this) {
         assertEqual( true, open )
@@ -232,9 +233,9 @@ test.describe("Client", function() { with(this) {
 
     describe("with a valid response followed by a frame", function() { with(this) {
       before(function() { with(this) {
-        var resp = new Buffer(response().length + 4)
-        new Buffer(response()).copy(resp)
-        new Buffer([0x81, 0x02, 72, 105]).copy(resp, resp.length - 4)
+        var resp = Buffer.alloc(response().length + 4)
+        Buffer.from(response()).copy(resp)
+        Buffer.from([0x81, 0x02, 72, 105]).copy(resp, resp.length - 4)
         driver().parse(resp)
       }})
 
@@ -252,7 +253,7 @@ test.describe("Client", function() { with(this) {
     describe("with a bad status line", function() { with(this) {
       before(function() {
         var resp = this.response().replace(/101/g, "4")
-        this.driver().parse(new Buffer(resp))
+        this.driver().parse(Buffer.from(resp))
       })
 
       it("changes the state to closed", function() { with(this) {
@@ -266,7 +267,7 @@ test.describe("Client", function() { with(this) {
     describe("with a bad Upgrade header", function() { with(this) {
       before(function() {
         var resp = this.response().replace(/websocket/g, "wrong")
-        this.driver().parse(new Buffer(resp))
+        this.driver().parse(Buffer.from(resp))
       })
 
       it("changes the state to closed", function() { with(this) {
@@ -280,7 +281,7 @@ test.describe("Client", function() { with(this) {
     describe("with a bad Accept header", function() { with(this) {
       before(function() {
         var resp = this.response().replace(/QV3/g, "wrong")
-        this.driver().parse(new Buffer(resp))
+        this.driver().parse(Buffer.from(resp))
       })
 
       it("changes the state to closed", function() { with(this) {
@@ -296,7 +297,7 @@ test.describe("Client", function() { with(this) {
 
       before(function() {
         var resp = this.response().replace(/\r\n\r\n/, "\r\nSec-WebSocket-Protocol: xmpp\r\n\r\n")
-        this.driver().parse(new Buffer(resp))
+        this.driver().parse(Buffer.from(resp))
       })
 
       it("changs the state to open", function() { with(this) {
@@ -315,7 +316,7 @@ test.describe("Client", function() { with(this) {
 
       before(function() {
         var resp = this.response().replace(/\r\n\r\n/, "\r\nSec-WebSocket-Protocol: irc\r\n\r\n")
-        this.driver().parse(new Buffer(resp))
+        this.driver().parse(Buffer.from(resp))
       })
 
       it("changs the state to closed", function() { with(this) {

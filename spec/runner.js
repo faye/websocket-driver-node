@@ -1,11 +1,10 @@
-var test   = require('jstest').Test,
+var Buffer = require('safe-buffer').Buffer,
+    test   = require('jstest').Test,
     Stream = require('stream').Stream,
     util   = require('util')
 
 var BufferMatcher = function(data) {
-  this._data = (typeof data === 'string')
-             ? new Buffer(data, 'utf8')
-             : new Buffer(data)
+  this._data = Buffer.from(data)
 }
 BufferMatcher.prototype.equals = function(other) {
   if (this._data.length !== other.length) return false;
