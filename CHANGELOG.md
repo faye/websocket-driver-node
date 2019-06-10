@@ -1,3 +1,13 @@
+### 0.7.1 / 2019-06-10
+
+- Catch any exceptions produced while generating a handshake response and send a
+  `400 Bad Request` response to the client
+- Pick the RFC-6455 protocol version if the request contains any of the headers
+  used by that version
+- Use the `Buffer.alloc()` and `Buffer.from()` functions instead of the unsafe
+  `Buffer()` constructor
+- Handle errors encountered while handling malformed draft-76 requests
+
 ### 0.7.0 / 2017-09-11
 
 - Add `ping` and `pong` to the set of events users can listen to
