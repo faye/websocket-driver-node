@@ -4,7 +4,7 @@ var Client = require("../../../lib/websocket/driver/client"),
 
 test.describe("Client", function() { with(this) {
     define("options", function() {
-    return this._options = this._options || {protocols: this.protocols()}
+    return this._options = this._options || { protocols: this.protocols() }
   })
 
   define("protocols", function() {
@@ -202,7 +202,7 @@ test.describe("Client", function() { with(this) {
       }})
 
       it("emits an 'error' event if the proxy does not connect", function() { with(this) {
-        expect(proxy, "emit").given("error", objectIncluding({message: "Can't establish a connection to the server at ws://www.example.com/socket"}))
+        expect(proxy, "emit").given("error", objectIncluding({ message: "Can't establish a connection to the server at ws://www.example.com/socket" }))
         expect(proxy, "emit").given("close")
         expect(proxy, "emit").given("end")
         proxy.write(Buffer.from("HTTP/1.1 403 Forbidden\r\n\r\n"))

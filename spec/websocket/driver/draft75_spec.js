@@ -14,7 +14,7 @@ test.describe("Draft75", function() { with(this) {
   })
 
   define("options", function() {
-    return this._options = this._options || {masking: false}
+    return this._options = this._options || { masking: false }
   })
 
   define("driver", function() {

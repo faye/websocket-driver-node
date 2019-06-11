@@ -177,7 +177,7 @@ var driver = websocket.client('ws://www.example.com/socket'),
     proxy  = driver.proxy('http://username:password@proxy.example.com'),
     tcp    = net.connect(80, 'proxy.example.com');
 
-tcp.pipe(proxy).pipe(tcp, {end: false});
+tcp.pipe(proxy).pipe(tcp, { end: false });
 
 tcp.on('connect', function() {
   proxy.start();

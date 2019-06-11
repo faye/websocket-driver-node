@@ -5,11 +5,11 @@ var net       = require('net'),
     websocket = require('..'),
     deflate   = require('permessage-deflate');
 
-var DEFAULT_PORTS = {'ws:': 80, 'wss:': 443};
+var DEFAULT_PORTS = { 'ws:': 80, 'wss:': 443 };
 
 var uri  = url.parse(process.argv[2]),
     port = uri.port || DEFAULT_PORTS[uri.protocol],
-    conn = net.connect({host: uri.hostname, port: port});
+    conn = net.connect({ host: uri.hostname, port: port });
 
 var driver = websocket.client(uri.href);
 driver.addExtension(deflate);
