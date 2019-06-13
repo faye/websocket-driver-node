@@ -1,3 +1,9 @@
+### 0.7.2 / 2019-06-13
+
+- Cap version of http-parser-js below 0.4.11, which introduced a bug that
+  prevents us from handling messages that are part of the same input buffer as
+  the handshake response if chunked encoding is specified
+
 ### 0.7.1 / 2019-06-10
 
 - Catch any exceptions produced while generating a handshake response and send a
