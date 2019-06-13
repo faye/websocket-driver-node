@@ -7,7 +7,7 @@
                     "websocket"
           ],
           "license": "Apache-2.0",
-          "version": "0.7.2",
+          "version": "0.7.3",
           "engines": {
                     "node": ">=0.8.0"
           },
@@ -16,9 +16,9 @@
           ],
           "main": "./lib/websocket/driver",
           "dependencies": {
-                    "http-parser-js": ">= 0.4.0, < 0.4.11",
-                    "safe-buffer": ">= 5.1.0",
-                    "websocket-extensions": ">= 0.1.1"
+                    "http-parser-js": ">=0.4.0 <0.4.11",
+                    "safe-buffer": ">=5.1.0",
+                    "websocket-extensions": ">=0.1.1"
           },
           "devDependencies": {
                     "jstest": "*",
