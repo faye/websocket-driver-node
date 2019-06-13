@@ -16,9 +16,9 @@
           ],
           "main": "./lib/websocket/driver",
           "dependencies": {
-                    "http-parser-js": ">=0.4.0",
-                    "safe-buffer": ">=5.1.1",
-                    "websocket-extensions": ">=0.1.1"
+                    "http-parser-js": ">= 0.4.0, < 0.4.11",
+                    "safe-buffer": ">= 5.1.0",
+                    "websocket-extensions": ">= 0.1.1"
           },
           "devDependencies": {
                     "jstest": "*",
