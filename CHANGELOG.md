@@ -1,3 +1,10 @@
+### 0.7.5 / 2026-06-04
+
+- Close a draft-75/76 connection if a length header grows to exceed the
+  configured max length
+- Fail the connection if a message is larger than the configured max length
+  after extension processing
+
 ### 0.7.4 / 2020-05-22
 
 - Avoid crashing if `process.version` does not contain any digits
