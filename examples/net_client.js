@@ -7,7 +7,11 @@ var net       = require('net'),
 
 var DEFAULT_PORTS = { 'ws:': 80, 'wss:': 443 };
 
-var uri  = url.parse(process.argv[2]),
+var parseUrl = function(str) {
+  return (typeof URL === 'function') ? new URL(str) : url.parse(str);
+};
+
+var uri  = parseUrl(process.argv[2]),
     port = uri.port || DEFAULT_PORTS[uri.protocol],
     conn = net.connect({ host: uri.hostname, port: port });
 
