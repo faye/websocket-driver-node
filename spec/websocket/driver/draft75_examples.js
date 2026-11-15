@@ -26,6 +26,17 @@ test.describe("draft-75", function() { with(this) {
           assertEqual( "Hello", message )
         }})
 
+        it("handles length-prefixed frames containing 0xFF", function() { with(this) {
+          driver().parse([0x80, 0x03, 0x48, 0xff, 0x6c])
+          assertEqual( "", message )
+        }})
+
+        it("handles length-prefixed frames containing 0xFF following another message", function() { with(this) {
+          driver().parse([0x00, 0x41, 0x42, 0xff])
+          driver().parse([0x81, 0x02, 0xff, 0x00])
+          assertEqual( "AB", message )
+        }})
+
         it("parses multibyte text frames", function() { with(this) {
           driver().parse([0x00, 0x41, 0x70, 0x70, 0x6c, 0x65, 0x20, 0x3d, 0x20, 0xef, 0xa3, 0xbf, 0xff])
           assertEqual( "Apple = ", message )
