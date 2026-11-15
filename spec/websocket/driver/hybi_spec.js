@@ -495,7 +495,7 @@ test.describe("Hybi", function() { with(this) {
         driver().on("ping", function(event) { ping = event })
         driver().on("pong", function(event) { pong = event })
 
-        driver().parse([0x8a, 0x02, 72, 105])
+        driver().parse([0x8a, 0x02, 0x48, 0x69])
 
         assertEqual( undefined, ping )
         assertEqual( "Hi", pong.data )
@@ -504,7 +504,14 @@ test.describe("Hybi", function() { with(this) {
       it("does not run the callback on non-matching pong", function() { with(this) {
         var reply = null
         driver().ping("Hi", function() { reply = true })
-        driver().parse([0x8a, 0x03, 119, 97, 116])
+        driver().parse([0x8a, 0x03, 0x77, 0x61, 0x74])
+        assert( !reply )
+      }})
+
+      it("does not invoke Object properties named by the pong message", function() { with(this) {
+        var reply = null
+        driver().ping("Hi", function() { reply = true })
+        driver().parse([0x8a, 0x09, 0x5f, 0x5f, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x5f, 0x5f])
         assert( !reply )
       }})
     }})
