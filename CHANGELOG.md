@@ -1,3 +1,16 @@
+### 0.8.0 / 2026-11-16
+
+- Add `allowDrafts` option to explicitly enable support for `draft75` and
+  `draft76` protocols; these are now disabled by default
+- Forward the `maxLength` option to any registered extensions
+- Fix bug that allowed received `pong` frames to invoke any method from
+  `Object.prototype`
+- Fix bug in `draft75` parser that could cause message corruption or crashes if
+  the byte `0xFF` appears in a byte stream following a length prefix
+- Prevent a crash that could be triggered by a specially crafted value for the
+  `Sec-WebSocket-Key1` or `Sec-WebSocket-Key2` header
+- Fix deprecation warnings caused by use of `url.parse()`
+
 ### 0.7.5 / 2026-06-04
 
 - Close a draft-75/76 connection if a length header grows to exceed the
