@@ -240,6 +240,9 @@ following fields:
 - `protocols` - an array of strings representing acceptable subprotocols for use
   over the socket. The driver will negotiate one of these to use via the
   `Sec-WebSocket-Protocol` header if supported by the other peer.
+- `allowDrafts` - if set to `true`, the driver will accept requests from clients
+  using long-outdated draft versions of the WebSocket protocol. For security
+  reasons, this option is turned off by default.
 
 A driver has two duplex streams attached to it:
 

@@ -5,7 +5,7 @@ var net       = require('net'),
     deflate   = require('permessage-deflate');
 
 var server = net.createServer(function(connection) {
-  var driver = websocket.server();
+  var driver = websocket.server({ allowDrafts: true });
   driver.addExtension(deflate);
 
   driver.on('connect', function() {
