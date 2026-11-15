@@ -85,41 +85,48 @@ test.describe("Draft76", function() { with(this) {
         assertEqual( "hixie-76", driver().version )
       }})
 
-      describe("with an invalid key header", function() { with(this) {
-        before(function() { with(this) {
-          request().headers["sec-websocket-key1"] = "2 L785 8o% s9Sy9@V. 4<1P5"
-        }})
+      var invalidKeys = [
+        "2 L785 8o% s9Sy9@V. 4<1P5",
+        "858 993 4592"
+      ]
 
-        it("writes a handshake error response", function() { with(this) {
-          expect(driver().io, "emit").given("data", buffer(
-              "HTTP/1.1 400 Bad Request\r\n" +
-              "Content-Type: text/plain\r\n" +
-              "Content-Length: 45\r\n" +
-              "\r\n" +
-              "Client sent invalid Sec-WebSocket-Key headers"))
-          driver().start()
-        }})
+      invalidKeys.forEach(function(key) {
+        describe("with an invalid key header", function() { with(this) {
+          before(function() { with(this) {
+            request().headers["sec-websocket-key1"] = key
+          }})
 
-        it("does not trigger the onopen event", function() { with(this) {
-          driver().start()
-          assertEqual( false, open )
-        }})
+          it("writes a handshake error response", function() { with(this) {
+            expect(driver().io, "emit").given("data", buffer(
+                "HTTP/1.1 400 Bad Request\r\n" +
+                "Content-Type: text/plain\r\n" +
+                "Content-Length: 45\r\n" +
+                "\r\n" +
+                "Client sent invalid Sec-WebSocket-Key headers"))
+            driver().start()
+          }})
 
-        it("triggers the onerror event", function() { with(this) {
-          driver().start()
-          assertEqual( "Client sent invalid Sec-WebSocket-Key headers", error.message )
-        }})
+          it("does not trigger the onopen event", function() { with(this) {
+            driver().start()
+            assertEqual( false, open )
+          }})
 
-        it("triggers the onclose event", function() { with(this) {
-          driver().start()
-          assertEqual( true, close )
-        }})
+          it("triggers the onerror event", function() { with(this) {
+            driver().start()
+            assertEqual( "Client sent invalid Sec-WebSocket-Key headers", error.message )
+          }})
 
-        it("changes the state to closed", function() { with(this) {
-          driver().start()
-          assertEqual( "closed", driver().getState()  )
+          it("triggers the onclose event", function() { with(this) {
+            driver().start()
+            assertEqual( true, close )
+          }})
+
+          it("changes the state to closed", function() { with(this) {
+            driver().start()
+            assertEqual( "closed", driver().getState()  )
+          }})
         }})
-      }})
+      })
     }})
 
     describe("frame", function() { with(this) {
