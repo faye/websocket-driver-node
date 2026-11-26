@@ -1,3 +1,8 @@
+### 0.8.1 / 2026-11-26
+
+- Make buffering of fragmented frames more space-efficient
+- Stop buffering incoming data after a socket has failed or been closed
+
 ### 0.8.0 / 2026-11-16
 
 - Add `allowDrafts` option to explicitly enable support for `draft75` and
